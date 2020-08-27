@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Card, CardContent, FormControl, MenuItem, Select } from '@material-ui/core'
 import Infobox from './Infobox'
 import Map from './Map'
+import LineGraph from './LineGraph'
 import Table from './Table'
 import { sortData } from './utli'
 import './App.css'
@@ -83,6 +84,7 @@ function App() {
           <Table countries={countryTable} />
           {/* Table */}
           <h3>Worldwide new cases</h3>
+          <LineGraph />
           {/* Graph */}
         </CardContent>
       </Card>
