@@ -1,5 +1,37 @@
-.app {
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+body {
+  background: #f5f6fa;
+}
+
+.app {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 22px;
+}
+
+.app_leftside {
+  flex: 0.9;
+}
+
+.app_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.app_stats {
+  display: flex;
+  justify-content: space-around;
+}
+
+@media (max-width: 900px) {
+  .app {
+    flex-direction: column;
+  }
 }
