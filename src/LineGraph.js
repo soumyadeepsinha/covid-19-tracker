@@ -65,7 +65,7 @@ const buildChart = (data, casesType) => {
 function LineGraph({ casesType = 'cases' }) {
   const [data, setData] = useState({})
 
-  const historical = 'https://disease.sh/v3/covid-19/historical/all?lastdays=120'
+  const historical = 'https://disease.sh/v3/covid-19/historical/all?lastdays=90'
 
   useEffect(() => {
     const fetchData = async () => {
