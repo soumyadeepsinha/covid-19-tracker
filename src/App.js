@@ -3,6 +3,7 @@ import { Card, CardContent, FormControl, MenuItem, Select } from '@material-ui/c
 import Infobox from './Infobox'
 import Map from './Map'
 import LineGraph from './LineGraph'
+import 'leaflet/dist/leaflet.css'
 import Table from './Table'
 import { sortData } from './utli'
 import './App.css'
@@ -12,6 +13,9 @@ function App() {
   const [country, setCountry] = useState('worldwide')
   const [countryInfo, setCountryInfo] = useState({})
   const [countryTable, setCountryTable] = useState([])
+  const [mapCenter, setMapCenter] = useState({ lat: 28.65381, lng: 77.22897 })
+  const [mapZoom, setMapZoom] = useState(3)
+  const [mapCountries, setMapCountries] = useState([])
 
   useEffect(() => {
     fetch('https://disease.sh/v3/covid-19/all')
@@ -33,6 +37,7 @@ function App() {
             value: country.countryInfo.iso2 // IND, USA, UK
           }))
           const sortedData = sortData(data)
+          setMapCountries(data)
           setCountryTable(sortedData)
           setCountries(countries)
         })
@@ -51,6 +56,8 @@ function App() {
       .then(data => {
         setCountryInfo(countryCode)
         setCountryInfo(data)
+        setMapCenter([data.countryInfo.lat, data.countryInfo.long])
+        setMapZoom(4)
       })
   }
 
@@ -71,21 +78,34 @@ function App() {
           </FormControl>
         </div>
         <div className="app_stats">
-          <Infobox title="Corona Virus Cases" cases={countryInfo.todayCases} total={countryInfo.cases} />
-          <Infobox title="Recovered" cases={countryInfo.todayRecovered} total={countryInfo.recovered} />
-          <Infobox title="Deaths" cases={countryInfo.todayDeaths} total={countryInfo.deaths} />
+          <Infobox
+            title="Corona Virus Cases"
+            cases={countryInfo.todayCases}
+            total={countryInfo.cases}
+          />
+          <Infobox
+            title="Recovered"
+            cases={countryInfo.todayRecovered}
+            total={countryInfo.recovered}
+          />
+          <Infobox
+            title="Deaths"
+            cases={countryInfo.todayDeaths}
+            total={countryInfo.deaths}
+          />
         </div>
-        {/* Map */}
-        <Map />
+        <Map
+          countries={mapCountries}
+          center={mapCenter}
+          zoom={mapZoom}
+        />
       </div>
       <Card className="app_rightside">
         <CardContent>
           <h3>Live Cases by Country</h3>
           <Table countries={countryTable} />
-          {/* Table */}
           <h3>Worldwide new cases</h3>
           <LineGraph />
-          {/* Graph */}
         </CardContent>
       </Card>
     </div>
