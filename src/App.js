@@ -5,7 +5,7 @@ import Map from './Map'
 import LineGraph from './LineGraph'
 import 'leaflet/dist/leaflet.css'
 import Table from './Table'
-import { sortData } from './utli'
+import { sortData, prettyPrintStat } from './utli'
 import './App.css'
 
 function App() {
@@ -16,6 +16,7 @@ function App() {
   const [mapCenter, setMapCenter] = useState({ lat: 28.65381, lng: 77.22897 })
   const [mapZoom, setMapZoom] = useState(3)
   const [mapCountries, setMapCountries] = useState([])
+  const [casesType, setCasesType] = useState('cases')
 
   useEffect(() => {
     fetch('https://disease.sh/v3/covid-19/all')
@@ -79,22 +80,26 @@ function App() {
         </div>
         <div className="app_stats">
           <Infobox
+            onClick={(e) => setCasesType('cases')}
             title="Corona Virus Cases"
-            cases={countryInfo.todayCases}
+            cases={prettyPrintStat(countryInfo.todayCases)}
             total={countryInfo.cases}
           />
           <Infobox
+            onClick={(e) => setCasesType('recovered')}
             title="Recovered"
-            cases={countryInfo.todayRecovered}
+            cases={prettyPrintStat(countryInfo.todayRecovered)}
             total={countryInfo.recovered}
           />
           <Infobox
+            onClick={(e) => setCasesType('deaths')}
             title="Deaths"
-            cases={countryInfo.todayDeaths}
+            cases={prettyPrintStat(countryInfo.todayDeaths)}
             total={countryInfo.deaths}
           />
         </div>
         <Map
+          casesType={casesType}
           countries={mapCountries}
           center={mapCenter}
           zoom={mapZoom}
@@ -104,8 +109,8 @@ function App() {
         <CardContent>
           <h3>Live Cases by Country</h3>
           <Table countries={countryTable} />
-          <h3>Worldwide new cases</h3>
-          <LineGraph />
+          <h3>Worldwide new {casesType}</h3>
+          <LineGraph casesType={casesType} />
         </CardContent>
       </Card>
     </div>
